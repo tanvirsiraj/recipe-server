@@ -24,6 +24,17 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
+
+    const recipeCollection = client.db("recipeDB").collection("allRecipe");
+
+    // createRecipe api
+    app.post("/createRecipe", async (req, res) => {
+      const recipe = req.recipe;
+      // console.log(recipe);
+      const result = await recipeCollection.insertOne(recipe);
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
