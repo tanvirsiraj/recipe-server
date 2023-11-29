@@ -27,12 +27,21 @@ async function run() {
     // Send a ping to confirm a successful connection
 
     const recipeCollection = client.db("recipeDB").collection("allRecipe");
+    const savedRecipeCollection = client
+      .db("recipeDB")
+      .collection("savedRecipe");
 
     // createRecipe api
     app.post("/createRecipe", async (req, res) => {
       const recipe = req.body;
       // console.log(recipe);
       const result = await recipeCollection.insertOne(recipe);
+      res.send(result);
+    });
+    // savedRecipe api
+    app.post("/savedRecipe", async (req, res) => {
+      const recipe = req.body;
+      const result = await savedRecipeCollection.insertOne(recipe);
       res.send(result);
     });
 
@@ -50,7 +59,7 @@ async function run() {
     });
 
     // update api
-    app.put("/createRecipe/:id", async (req, res) => {
+    app.put("/updateRecipe/:id", async (req, res) => {
       const id = req.params.id;
       const recipe = req.body;
       const options = { upsert: true };
