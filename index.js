@@ -38,12 +38,6 @@ async function run() {
       const result = await recipeCollection.insertOne(recipe);
       res.send(result);
     });
-    // savedRecipe api
-    app.post("/savedRecipe", async (req, res) => {
-      const recipe = req.body;
-      const result = await savedRecipeCollection.insertOne(recipe);
-      res.send(result);
-    });
 
     app.get("/createRecipe", async (req, res) => {
       const result = await recipeCollection.find().toArray();
@@ -80,6 +74,28 @@ async function run() {
         updatedRecipe,
         options
       );
+      res.send(result);
+    });
+
+    // savedRecipe api
+    app.post("/savedRecipe", async (req, res) => {
+      const recipe = req.body;
+      const result = await savedRecipeCollection.insertOne(recipe);
+      res.send(result);
+    });
+
+    // getting  user all saved data from database
+    app.get("/savedRecipe", async (req, res) => {
+      const email = req.query.email;
+      query = { email: email };
+      const result = await savedRecipeCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    app.delete("/savedRecipe/:id", async (req, res) => {
+      const id = req.params.id;
+      query = { _id: new ObjectId(id) };
+      const result = await savedRecipeCollection.deleteOne(query);
       res.send(result);
     });
 
